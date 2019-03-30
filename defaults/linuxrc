@@ -702,6 +702,13 @@ do
 			else
 				MOUNT_STATE=rw,zfsutil
 			fi
+			if [ "$(zfs get -H -o value -s default,local,inherited atime "${REAL_ROOT}")" = 'off' ]
+			then
+				MOUNT_STATE+=",noatime"
+			elif [ "$(zfs get -H -o value -s default,local,inherited relatime "${REAL_ROOT}")" = 'on' ]
+			then
+				MOUNT_STATE+=",relatime"
+			fi
 		else
 			MOUNT_STATE=ro
 		fi
